@@ -6,6 +6,7 @@ import androidx.room.RoomDatabase
 import com.fcenesiz.mvvmnewsapp.api.NewsAPI
 import com.fcenesiz.mvvmnewsapp.db.ArticleDao
 import com.fcenesiz.mvvmnewsapp.db.ArticleDatabase
+import com.fcenesiz.mvvmnewsapp.repository.NewsRepository
 import com.fcenesiz.mvvmnewsapp.util.Constants.BASE_URL
 import com.fcenesiz.mvvmnewsapp.util.Constants.DATABASE_NAME
 import dagger.Module
@@ -55,6 +56,10 @@ object AppModule {
         ArticleDatabase::class.java,
         DATABASE_NAME
     ).build()
+
+    @Singleton
+    @Provides
+    fun provideNewsRepository(db: ArticleDatabase) = NewsRepository(db)
 
     @Singleton
     @Provides
