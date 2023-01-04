@@ -4,6 +4,7 @@ package com.fcenesiz.mvvmnewsapp.models
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 @Entity(tableName = "articles")
 data class Article(
@@ -28,4 +29,6 @@ data class Article(
     @SerializedName("urlToImage")
     val urlToImage: String
 
-)
+) : Serializable{
+
+}
