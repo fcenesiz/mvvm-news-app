@@ -1,4 +1,4 @@
-package com.fcenesiz.mvvmnewsapp
+package com.fcenesiz.mvvmnewsapp.models
 
 
 import androidx.room.Entity

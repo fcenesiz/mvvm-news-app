@@ -1,10 +1,16 @@
 package com.fcenesiz.mvvmnewsapp.di
 
+import android.content.Context
+import androidx.room.Room
+import androidx.room.RoomDatabase
 import com.fcenesiz.mvvmnewsapp.api.NewsAPI
+import com.fcenesiz.mvvmnewsapp.db.ArticleDao
+import com.fcenesiz.mvvmnewsapp.db.ArticleDatabase
 import com.fcenesiz.mvvmnewsapp.util.Constants.Companion.BASE_URL
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -39,13 +45,25 @@ object AppModule {
         retrofit: Retrofit
     ) = retrofit.create(NewsAPI::class.java)
 
+    @Singleton
+    @Provides
+    fun provideArticleDatabase(
+        @ApplicationContext context: Context
+    ): RoomDatabase = Room.databaseBuilder(
+        context.applicationContext,
+        ArticleDatabase::class.java,
+        "article_db.db"
+    ).build()
+
+    @Singleton
+    @Provides
+    fun provideArticleDao(db: ArticleDatabase) = db.getArticleDao()
 
 }
 
 /*
-val logging = HttpLoggingInterceptor()
-logging.setLevel(HttpLoggingInterceptor.Level.Body)
-val client = OkHttpClient.Builder()
-    .addInterceptor(logging)
-    .build()
+
+    @Singleton
+    @Provides
+    fun provideRunDAO(db: RunningDatabase): RunDAO = db.getRunDao()
 */
