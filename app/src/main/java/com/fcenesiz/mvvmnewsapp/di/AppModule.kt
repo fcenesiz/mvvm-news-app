@@ -50,16 +50,19 @@ object AppModule {
     @Singleton
     @Provides
     fun provideArticleDatabase(
-        @ApplicationContext context: Context
-    ): RoomDatabase = Room.databaseBuilder(
-        context.applicationContext,
+        @ApplicationContext app: Context
+    ): ArticleDatabase = Room.databaseBuilder(
+        app,
         ArticleDatabase::class.java,
         DATABASE_NAME
     ).build()
 
     @Singleton
     @Provides
-    fun provideNewsRepository(db: ArticleDatabase) = NewsRepository(db)
+    fun provideNewsRepository(
+        api: NewsAPI,
+        db: ArticleDatabase
+    ) = NewsRepository(api, db)
 
     @Singleton
     @Provides
