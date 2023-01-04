@@ -6,7 +6,8 @@ import androidx.room.RoomDatabase
 import com.fcenesiz.mvvmnewsapp.api.NewsAPI
 import com.fcenesiz.mvvmnewsapp.db.ArticleDao
 import com.fcenesiz.mvvmnewsapp.db.ArticleDatabase
-import com.fcenesiz.mvvmnewsapp.util.Constants.Companion.BASE_URL
+import com.fcenesiz.mvvmnewsapp.util.Constants.BASE_URL
+import com.fcenesiz.mvvmnewsapp.util.Constants.DATABASE_NAME
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -52,7 +53,7 @@ object AppModule {
     ): RoomDatabase = Room.databaseBuilder(
         context.applicationContext,
         ArticleDatabase::class.java,
-        "article_db.db"
+        DATABASE_NAME
     ).build()
 
     @Singleton
@@ -60,10 +61,3 @@ object AppModule {
     fun provideArticleDao(db: ArticleDatabase) = db.getArticleDao()
 
 }
-
-/*
-
-    @Singleton
-    @Provides
-    fun provideRunDAO(db: RunningDatabase): RunDAO = db.getRunDao()
-*/
