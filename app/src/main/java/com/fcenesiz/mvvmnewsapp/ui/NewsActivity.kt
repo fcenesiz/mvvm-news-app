@@ -6,7 +6,9 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.fcenesiz.mvvmnewsapp.databinding.ActivityNewsBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class NewsActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityNewsBinding
@@ -17,7 +19,7 @@ class NewsActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.apply {
-            supportFragmentManager.findFragmentById(binding.newsNavHostFragment.id)?.let {
+            supportFragmentManager.findFragmentById(newsNavHostFragment.id)?.let {
                 bottomNavigationView.setupWithNavController(
                     it.findNavController()
                 )
