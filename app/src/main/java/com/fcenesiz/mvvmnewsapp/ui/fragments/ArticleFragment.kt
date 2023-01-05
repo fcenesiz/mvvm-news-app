@@ -41,7 +41,7 @@ class ArticleFragment : BaseFragment(R.layout.fragment_article) {
         binding.apply {
             webView.apply {
                 webViewClient = WebViewClient()
-                loadUrl(article.url)
+                article.url?.let { loadUrl(it) }
             }
             fab.setOnClickListener {
                 viewModel.saveArticle(article)

@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.fcenesiz.mvvmnewsapp.models.Article
 import com.fcenesiz.mvvmnewsapp.models.NewsResponse
 import com.fcenesiz.mvvmnewsapp.repository.NewsRepository
+import com.fcenesiz.mvvmnewsapp.util.Constants.COUNTRY_CODE
 import com.fcenesiz.mvvmnewsapp.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -20,12 +21,14 @@ class NewsViewModel @Inject constructor(
 
     val breakingNews: MutableLiveData<Resource<NewsResponse>> = MutableLiveData()
     var breakingNewsPage = 1
+    var breakingNewsResponse: NewsResponse? = null
 
     val searchNews: MutableLiveData<Resource<NewsResponse>> = MutableLiveData()
     var searchNewsPage = 1
+    var searchNewsResponse: NewsResponse? = null
 
     init {
-        getBreakingNews("tr")
+        getBreakingNews(COUNTRY_CODE)
     }
 
     fun getBreakingNews(countryCode: String) = viewModelScope.launch(Dispatchers.IO) {
@@ -43,7 +46,15 @@ class NewsViewModel @Inject constructor(
     private fun handleBreakingNewsResponse(response: Response<NewsResponse>): Resource<NewsResponse> {
         if (response.isSuccessful) {
             response.body()?.let { resultResponse ->
-                return Resource.Success(resultResponse)
+                breakingNewsPage++
+                if (breakingNewsResponse == null) {
+                    breakingNewsResponse = resultResponse
+                } else {
+                    val oldArticles = breakingNewsResponse?.articles
+                    val newsArticles = resultResponse.articles
+                    oldArticles?.addAll(newsArticles)
+                }
+                return Resource.Success(breakingNewsResponse ?: resultResponse)
             }
         }
         return Resource.Error(response.message())
@@ -52,7 +63,15 @@ class NewsViewModel @Inject constructor(
     private fun handleSearchNewsResponse(response: Response<NewsResponse>): Resource<NewsResponse> {
         if (response.isSuccessful) {
             response.body()?.let { resultResponse ->
-                return Resource.Success(resultResponse)
+                searchNewsPage++
+                if (searchNewsResponse == null) {
+                    searchNewsResponse = resultResponse
+                } else {
+                    val oldArticles = searchNewsResponse?.articles
+                    val newsArticles = resultResponse.articles
+                    oldArticles?.addAll(newsArticles)
+                }
+                return Resource.Success(searchNewsResponse ?: resultResponse)
             }
         }
         return Resource.Error(response.message())
