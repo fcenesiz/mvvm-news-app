@@ -3,6 +3,7 @@ package com.fcenesiz.mvvmnewsapp.ui
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.fcenesiz.mvvmnewsapp.models.Article
 import com.fcenesiz.mvvmnewsapp.models.NewsResponse
 import com.fcenesiz.mvvmnewsapp.repository.NewsRepository
 import com.fcenesiz.mvvmnewsapp.util.Resource
@@ -57,4 +58,23 @@ class NewsViewModel @Inject constructor(
         return Resource.Error(response.message())
     }
 
+    fun saveArticle(article: Article) = viewModelScope.launch {
+        newsRepository.upsertArticle(article)
+    }
+
+    fun getSavedNews() = newsRepository.getSavedNews()
+
+    fun deleteArticle(article: Article) = viewModelScope.launch {
+        newsRepository.deleteArticle(article)
+    }
+
 }
+
+
+
+
+
+
+
+
+

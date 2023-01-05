@@ -11,6 +11,7 @@ import androidx.navigation.fragment.navArgs
 import com.fcenesiz.mvvmnewsapp.R
 import com.fcenesiz.mvvmnewsapp.databinding.FragmentArticleBinding
 import com.fcenesiz.mvvmnewsapp.ui.NewsViewModel
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -37,9 +38,15 @@ class ArticleFragment : BaseFragment(R.layout.fragment_article) {
 
         val article = args.article
 
-        binding.webView.apply {
-            webViewClient = WebViewClient()
-            loadUrl(article.url)
+        binding.apply {
+            webView.apply {
+                webViewClient = WebViewClient()
+                loadUrl(article.url)
+            }
+            fab.setOnClickListener {
+                viewModel.saveArticle(article)
+                Snackbar.make(view, "Article saved successfully", Snackbar.LENGTH_SHORT).show()
+            }
         }
 
     }
